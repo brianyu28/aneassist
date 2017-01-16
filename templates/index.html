@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<h1>Crimson ANE Tools</h1>
+<hr/>
+
+<h2>Story Extract</h2>
+<form method="get" action="{{ url_for('extract') }}">
+    <input name="url" type="text" class="form-control" placeholder="URL" />
+    <br/>
+    <button type="submit" class="btn btn-primary">Extract</button>
+</form>
+
+{% endblock %}
