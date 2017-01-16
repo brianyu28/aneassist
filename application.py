@@ -1,5 +1,7 @@
+import datetime
 import lxml.html
 import os
+import pytz
 import requests
 
 from flask import Flask, render_template, request
@@ -8,7 +10,27 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+
+    # get the weather
+    token = os.environ.get("WEATHER_TOKEN")
+    res = requests.get("http://api.openweathermap.org/data/2.5/forecast/daily?q=Cambridge,MA&cnt=2&units=imperial", params={"APPID": token})
+    if res.status_code == 200:
+        data = res.json()
+        weather_status = data["list"][1]["weather"][0]["main"]
+        low = data["list"][1]["temp"]["min"]
+        high = data["list"][1]["temp"]["max"]
+        timestamp = data["list"][1]["dt"]
+        date = datetime.datetime.fromtimestamp(timestamp).replace(tzinfo=pytz.timezone("America/New_York")).strftime('%m-%d-%Y')
+        weather = {
+            "timestamp": date,
+            "status": weather_status,
+            "low": low,
+            "high": high
+        }
+    else:
+        weather = None
+
+    return render_template("index.html", weather=weather)
 
 @app.route("/extract/")
 def extract():

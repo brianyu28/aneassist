@@ -11,4 +11,19 @@
     <button type="submit" class="btn btn-primary">Extract</button>
 </form>
 
+<br/></br/>
+
+{% if weather %}
+<h2>Weather Projection for {{ weather.timestamp }}</h2>
+    <p><b>Weather:</b> {{ weather.status }}</p>
+    <p><b>Low:</b> {{ weather.low }}ºF</p>
+    <p><b>High:</b> {{ weather.high }}ºF</p>
+    <p>
+        This feature is in beta. You may wish to verify the weather report <a href="https://weather.com/weather/5day/l/02138:4:US" target="_blank">here</a>.
+    </p>
+
+{% else %}
+    There was an error retrieving the weather. <a href="https://weather.com/weather/5day/l/02138:4:US" target="_blank">Click here</a> to access the weather.
+{% endif %}
+
 {% endblock %}
