@@ -4,9 +4,15 @@ import os
 import pytz
 import requests
 
-from flask import Flask, render_template, request
+from flask import Flask, redirect, render_template, request
 
 app = Flask(__name__)
+
+def next_weekday(d, weekday):
+    days_ahead = weekday - d.weekday()
+    if days_ahead <= 0: # Target day already happened this week
+        days_ahead += 7
+    return d + datetime.timedelta(days_ahead - 7)
 
 @app.route("/")
 def index():
@@ -65,6 +71,15 @@ def extract():
     res = "<h1>" + str(headline) + "</h1>" + lxml.html.tostring(text).decode("utf-8")
 
     return res
+
+@app.route("/crossword/")
+def crossword():
+    # get the date of the most recent Monday
+    d = datetime.datetime.now()
+    next_monday = next_weekday(d, 0)
+    date_string = next_monday.strftime("%y%m%d")
+    url = "http://bbs.amuniversal.com/web/content/UFS_Puzzles/Todays_Crossword_Dailies/dax{}_week.zip".format(date_string)
+    return redirect(url)
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))

@@ -23,7 +23,15 @@
     </p>
 
 {% else %}
+<h2>Weather Projection</h2>
     There was an error retrieving the weather. <a href="https://weather.com/weather/5day/l/02138:4:US" target="_blank">Click here</a> to access the weather.
 {% endif %}
+
+<h2>Crossword</h2>
+
+<a href="{{ url_for('crossword') }}" class="btn btn-primary">Click Here to Download Crossword</a>
+<p>
+    <b>Note:</b> You will need to log in with The Crimson's username and password in order to access the crossword.
+</p>
 
 {% endblock %}
