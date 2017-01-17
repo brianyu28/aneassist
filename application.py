@@ -48,10 +48,6 @@ def extract():
     contents = lxml.html.fromstring(res.text)
     text = contents.get_element_by_id("text")
 
-    # get headline
-    headline = contents.get_element_by_id("top")
-    headline = headline.text
-
     # remove all the images
     images = text.find_class("shortcodes-object")
     for image in images:
@@ -68,7 +64,7 @@ def extract():
         for element in text.find_class(class_to_remove):
             element.drop_tree()
 
-    res = "<h1>" + str(headline) + "</h1>" + lxml.html.tostring(text).decode("utf-8")
+    res = lxml.html.tostring(text)
 
     return res
 
